@@ -8,7 +8,8 @@ class LyricsDomBuilder {
     this.lyStatus = false;
 
     /* ONSPOTIFY & LIVELYRICS */
-    this.PLAYERPROGRESS = "VSNO-TARGET-PROGRESS";
+    this.SPOTIFYPROGRESS = "VSNO-TARGET-PROGRESS";
+    this.PLAYERPROGRESS = "LYRIC-PROGRESS";
     this.LYRICSSCROLLABLE = "LILY-LYRICS";
     this.LYRICSCONTAINER = "LILY-CONTAINER";
     /* ---------------------- */
@@ -199,6 +200,16 @@ class LyricsDomBuilder {
           : "upstream-playing"
         : "upstream-unknown",
     );
+
+    // Append lyrics tracker element for plex/spotify to the Module Base
+    const lyricsModule = document.getElementById("module_13_MMM-LiveLyrics")
+    const lyricProgress = document.getElementById("LYRIC-PROGRESS")
+    if (!lyricProgress && lyricsModule) {
+      const e = document.createElement("div");
+      e.id = "LYRIC-PROGRESS"
+      e.setAttribute("from", "Spotify");
+      lyricsModule.appendChild(e)
+    }
 
     if (current && lyrics && lyrics.lyrics) {
       this.lyStatus = true;

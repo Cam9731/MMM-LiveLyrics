@@ -103,6 +103,8 @@ Module.register("MMM-LiveLyrics", {
     this.firstSync = this.config.hideSpotifyModule;
     this.sentData = true;
     this.externalHidden = false;
+    // Plex Lyrics Vars
+    this.playingOnPlex = false;
 
     /* Idk why using a simple .contains() does not work as its a string, but hey, I want to sleep */
     this.dynamicTheme =
@@ -206,9 +208,27 @@ Module.register("MMM-LiveLyrics", {
     this.config.events[notification]?.split(" ").forEach((e) => {
       switch (e) {
         case "NOW_PLAYING":
+          // Handle plex first
+          if (payload.device === 'plex') {
+            if (payload.playerIsEmpty) {
+              this.playingOnPlex = false;
+            } else {
+              this.playingOnPlex = true;
+            }
+          } else { // Recieved noti from someone other than plex
+            // If playing on plex, ignore any now playing reqs from spotify
+            if (this.playingOnPlex) {
+              break;
+            } 
+            // If not playing on plex, set it to do spotify
+            const lyricProgress = document.getElementById("LYRIC-PROGRESS")
+						if (lyricProgress) {
+							lyricProgress.setAttribute("from", "Spotify");
+						}
+          }
           this.nowPlayingData = payload;
           this.externalModuleHandler(!payload.playerIsEmpty, this.moduleHidden);
-
+          
           payload.playerIsEmpty
             ? (this.nowPlaying = false)
             : (this.nowPlaying = true);
