@@ -202,7 +202,7 @@ class LyricsDomBuilder {
     );
 
     // Append lyrics tracker element for plex/spotify to the Module Base
-    const lyricsModule = document.getElementById("module_13_MMM-LiveLyrics")
+    const lyricsModule = document.getElementsByClassName("module MMM-LiveLyrics")[0]
     const lyricProgress = document.getElementById("LYRIC-PROGRESS")
     if (!lyricProgress && lyricsModule) {
       const e = document.createElement("div");
